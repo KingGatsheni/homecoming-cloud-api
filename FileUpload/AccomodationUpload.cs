@@ -63,5 +63,15 @@ namespace homecoming.api.Repo
             }
             return fileName;
         }
+
+        public Task<string> FileUploadAsync(IFormFile file)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> MultiFileUploadAsync(Accomodation files)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

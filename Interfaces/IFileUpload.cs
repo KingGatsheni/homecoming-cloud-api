@@ -10,5 +10,7 @@ namespace homecoming.api.Abstraction
     public interface IFileUpload<T>:IMultiFileUpload<T>
     {
         public string FileUpload(IFormFile file);
+
+        public Task<string> FileUploadAsync(IFormFile file);
     }
 }

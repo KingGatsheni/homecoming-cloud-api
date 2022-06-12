@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace homecoming.api.Repo
 {
@@ -60,6 +61,16 @@ namespace homecoming.api.Repo
                 Debug.WriteLine(si.Message);
             }
             return fileName;
+        }
+
+        public Task<string> FileUploadAsync(IFormFile file)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> MultiFileUploadAsync(Room files)
+        {
+            throw new NotImplementedException();
         }
     }
 }

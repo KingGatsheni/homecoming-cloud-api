@@ -1,4 +1,5 @@
-﻿using homecoming.api.Abstraction;
+﻿using Azure.Storage.Blobs;
+using homecoming.api.Abstraction;
 using homecoming.api.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,23 +9,26 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace homecoming.api.Repo
 {
     public class BusinessRepo : IRepository<Business>
     {
-        HomecomingDbContext context;
-        IWebHostEnvironment webHost;
-        public BusinessRepo(IWebHostEnvironment env,HomecomingDbContext db)
+       private HomecomingDbContext context;
+       private IWebHostEnvironment webHost;
+       private BlobServiceClient client;
+        public BusinessRepo(IWebHostEnvironment env,HomecomingDbContext db, BlobServiceClient serviceClient)
         {
             webHost = env;
             context = db;
+            client = serviceClient;
         }
-        public void Add(Business Params)
+        public async void Add(Business Params)
         {
             if (Params.ImageFile != null)
             {
-                Params.CoverPhotoUrl = UploadCoverPhoto(Params.ImageFile);
+                Params.CoverPhotoUrl =  await UploadCoverPhotoToBlobAsync(Params.ImageFile);
             }
             Business business = new Business()
             {
@@ -108,6 +112,20 @@ namespace homecoming.api.Repo
                 Debug.WriteLine(si.Message);
             }
             return fileName;
+        }
+
+        private async Task<string> UploadCoverPhotoToBlobAsync(IFormFile file)
+        {
+                    string filename = string.Empty;
+            
+                    filename = Guid.NewGuid().ToString() + "-" + file.FileName;
+
+                    var blobContainer = client.GetBlobContainerClient("cloud-upload");
+
+                    var blobClient = blobContainer.GetBlobClient(filename);
+
+                     await blobClient.UploadAsync(file.OpenReadStream());
+                    return filename;         
         }
     }
 }

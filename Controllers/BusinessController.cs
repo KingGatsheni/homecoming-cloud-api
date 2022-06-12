@@ -1,4 +1,5 @@
-﻿using homecoming.api.Abstraction;
+﻿using Azure.Storage.Blobs;
+using homecoming.api.Abstraction;
 using homecoming.api.Model;
 using homecoming.api.Repo;
 using Microsoft.AspNetCore.Hosting;
@@ -14,14 +15,17 @@ namespace homecoming.api.Controllers
     [Route("/api/[controller]")]
     public class BusinessController : Controller
     {
-        IRepository<Business> repo;
-        IWebHostEnvironment web;
-        HomecomingDbContext db;
-        public BusinessController(IWebHostEnvironment host, HomecomingDbContext cx)
+       private IRepository<Business> repo;
+       private IWebHostEnvironment web;
+       private HomecomingDbContext db;
+       private readonly BlobServiceClient client;
+
+        public BusinessController(IWebHostEnvironment host, HomecomingDbContext cx, BlobServiceClient client)
         {
             web = host;
             db = cx;
-            repo = new BusinessRepo(web,db);
+            this.client = client;
+            repo = new BusinessRepo(web,db,client);
         }
         
         [HttpGet]

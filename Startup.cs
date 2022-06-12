@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using homecoming.api.Model;
 using homecoming.api.Model.IdentityModel;
 using Microsoft.AspNetCore.Authentication;
@@ -39,6 +40,9 @@ namespace homecoming.api
                 .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
             services.AddControllers();
             services.AddMemoryCache();
+            services.AddScoped(_ => {
+                return new BlobServiceClient(Configuration.GetConnectionString(BlobConfig.BlobConString));
+            });
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Reservation Api",Description= "homecoming.com swagger api, documents all endpints", Version = "v1" });
@@ -55,6 +59,7 @@ namespace homecoming.api
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+
 
        // Adding Jwt Bearer  
        .AddJwtBearer(options =>

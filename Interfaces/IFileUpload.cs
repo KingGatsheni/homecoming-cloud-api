@@ -11,6 +11,6 @@ namespace homecoming.api.Abstraction
     {
         public string FileUpload(IFormFile file);
 
-        public Task<string> FileUploadAsync(IFormFile file);
+        public string FileUploadAsync(IFormFile file);
     }
 }

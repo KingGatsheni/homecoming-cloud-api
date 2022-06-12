@@ -1,4 +1,5 @@
-﻿using homecoming.api.Abstraction;
+﻿using Azure.Storage.Blobs;
+using homecoming.api.Abstraction;
 using homecoming.api.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,12 +13,15 @@ namespace homecoming.api.Repo
 {
     public class RoomUpload:IFileUpload<Room>
     {
-        IWebHostEnvironment web;
+        private IWebHostEnvironment web;
+        private readonly BlobServiceClient client;
+
         private bool IsSuccess { get; set; } = false;
 
-        public RoomUpload(IWebHostEnvironment webHost)
+        public RoomUpload(IWebHostEnvironment webHost, BlobServiceClient client)
         {
             web = webHost;
+            this.client = client;
         }
         public bool MultiFileUpload(Room objectFile)
         {
@@ -26,7 +30,7 @@ namespace homecoming.api.Repo
                 objectFile.RoomGallary = new List<RoomImage>();
                 foreach (IFormFile file in objectFile.ImageList)
                 {
-                    objectFile.RoomGallary.Add(new RoomImage { ImageUrl = FileUpload(file) });
+                    objectFile.RoomGallary.Add(new RoomImage { ImageUrl = FileUploadAsync(file) });
                 }
                 IsSuccess = true;
                 return IsSuccess;
@@ -63,14 +67,18 @@ namespace homecoming.api.Repo
             return fileName;
         }
 
-        public Task<string> FileUploadAsync(IFormFile file)
+        public string FileUploadAsync(IFormFile file)
         {
-            throw new NotImplementedException();
-        }
+            string filename = string.Empty;
 
-        public Task<bool> MultiFileUploadAsync(Room files)
-        {
-            throw new NotImplementedException();
+            filename = Guid.NewGuid().ToString() + "-" + file.FileName;
+
+            var blobContainer = client.GetBlobContainerClient("cloud-upload");
+
+            var blobClient = blobContainer.GetBlobClient(filename);
+
+            blobClient.Upload(file.OpenReadStream());
+            return filename;
         }
     }
 }

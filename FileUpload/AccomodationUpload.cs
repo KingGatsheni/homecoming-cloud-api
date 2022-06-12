@@ -1,4 +1,5 @@
-﻿using homecoming.api.Abstraction;
+﻿using Azure.Storage.Blobs;
+using homecoming.api.Abstraction;
 using homecoming.api.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +14,14 @@ namespace homecoming.api.Repo
 {
     public class AccomodationUpload : IFileUpload<Accomodation>
     {
-        IWebHostEnvironment web;
+        private IWebHostEnvironment web;
+        private readonly BlobServiceClient client;
+
         private bool IsSuccess { get; set; } = false;
-        public AccomodationUpload(IWebHostEnvironment webHost)
+        public AccomodationUpload(IWebHostEnvironment webHost, BlobServiceClient client)
         {
             web = webHost;
+            this.client = client;
         }
         public bool MultiFileUpload(Accomodation objectFile)
         {
@@ -26,7 +30,7 @@ namespace homecoming.api.Repo
                 objectFile.AccomodationGallary = new List<ListingImage>();
                 foreach (IFormFile file in objectFile.ImageList)
                 {
-                    objectFile.AccomodationGallary.Add(new ListingImage { ImageUrl =FileUpload(file)});
+                    objectFile.AccomodationGallary.Add(new ListingImage { ImageUrl =FileUploadAsync(file)});
                 }
 
                 IsSuccess = true;
@@ -64,14 +68,18 @@ namespace homecoming.api.Repo
             return fileName;
         }
 
-        public Task<string> FileUploadAsync(IFormFile file)
+        public string FileUploadAsync(IFormFile file)
         {
-            throw new NotImplementedException();
-        }
+            string filename = string.Empty;
 
-        public Task<bool> MultiFileUploadAsync(Accomodation files)
-        {
-            throw new NotImplementedException();
+            filename = Guid.NewGuid().ToString() + "-" + file.FileName;
+
+            var blobContainer = client.GetBlobContainerClient("cloud-upload");
+
+            var blobClient = blobContainer.GetBlobClient(filename);
+
+            blobClient.Upload(file.OpenReadStream());
+            return filename;
         }
     }
 }

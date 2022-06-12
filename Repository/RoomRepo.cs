@@ -1,4 +1,5 @@
-﻿using homecoming.api.Abstraction;
+﻿using Azure.Storage.Blobs;
+using homecoming.api.Abstraction;
 using homecoming.api.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +12,16 @@ namespace homecoming.api.Repo
     public class RoomRepo:IRepository<Room>
     {
         private readonly IWebHostEnvironment web;
-        IFileUpload<Room> fileUpLoad;
-        HomecomingDbContext db;
-        public RoomRepo(IWebHostEnvironment host,HomecomingDbContext context)
+        private IFileUpload<Room> fileUpLoad;
+        private HomecomingDbContext db;
+        private readonly BlobServiceClient client;
+
+        public RoomRepo(IWebHostEnvironment host,HomecomingDbContext context, BlobServiceClient client)
         {
             web = host;
-            fileUpLoad = new RoomUpload(web);
+            fileUpLoad = new RoomUpload(web, client);
             db = context;
+            this.client = client;
         }
 
         /// <summary>

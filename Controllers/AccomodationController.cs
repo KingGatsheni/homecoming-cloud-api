@@ -1,4 +1,5 @@
-﻿using homecoming.api.Abstraction;
+﻿using Azure.Storage.Blobs;
+using homecoming.api.Abstraction;
 using homecoming.api.Model;
 using homecoming.api.Repo;
 using Microsoft.AspNetCore.Hosting;
@@ -12,14 +13,17 @@ namespace homecoming.api.Controllers
     public class AccomodationController : Controller
     {
 
-        AccomodationRepo repo;
-        IWebHostEnvironment web;
-        HomecomingDbContext db;
-        public AccomodationController(IWebHostEnvironment host, HomecomingDbContext cx)
+        private AccomodationRepo repo;
+        private IWebHostEnvironment web;
+        private HomecomingDbContext db;
+        private readonly BlobServiceClient client;
+
+        public AccomodationController(IWebHostEnvironment host, HomecomingDbContext cx, BlobServiceClient client)
         {
             web = host;
             db = cx;
-            repo = new AccomodationRepo(web, db);
+            this.client = client;
+            repo = new AccomodationRepo(web, db, client);
         }
 
 

@@ -24,11 +24,11 @@ namespace homecoming.api.Repo
             context = db;
             client = serviceClient;
         }
-        public async void Add(Business Params)
+        public void Add(Business Params)
         {
             if (Params.ImageFile != null)
             {
-                Params.CoverPhotoUrl =  await UploadCoverPhotoToBlobAsync(Params.ImageFile);
+                Params.CoverPhotoUrl = UploadCoverPhotoToBlob(Params.ImageFile);
             }
             Business business = new Business()
             {
@@ -114,7 +114,7 @@ namespace homecoming.api.Repo
             return fileName;
         }
 
-        private async Task<string> UploadCoverPhotoToBlobAsync(IFormFile file)
+        private string UploadCoverPhotoToBlob(IFormFile file)
         {
                     string filename = string.Empty;
             
@@ -124,7 +124,7 @@ namespace homecoming.api.Repo
 
                     var blobClient = blobContainer.GetBlobClient(filename);
 
-                     await blobClient.UploadAsync(file.OpenReadStream());
+                     blobClient.Upload(file.OpenReadStream());
                     return filename;         
         }
     }

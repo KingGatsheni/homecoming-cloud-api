@@ -41,7 +41,7 @@ namespace homecoming.api
             services.AddControllers();
             services.AddMemoryCache();
             services.AddScoped(_ => {
-                return new BlobServiceClient(Configuration.GetConnectionString(BlobConfig.BlobConString));
+                return new BlobServiceClient(BlobConfig.BlobConString);
             });
             services.AddSwaggerGen(options =>
             {

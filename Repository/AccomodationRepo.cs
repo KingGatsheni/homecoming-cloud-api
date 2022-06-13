@@ -32,7 +32,7 @@ namespace homecoming.api.Repo
                 Accomodation accomodation = new Accomodation()
                 {
                     BusinessId = Params.BusinessId,
-                    CoverPhoto = fileUpLoad.FileUpload(Params.CoverImage),
+                    CoverPhoto = fileUpLoad.FileUploadAsync(Params.CoverImage),
                     AccomodationName = Params.AccomodationName,
                     Location = Params.Location,
                     Description = Params.Description,

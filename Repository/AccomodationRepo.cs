@@ -70,6 +70,11 @@ namespace homecoming.api.Repo
         {
             return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).Where(o => o.BusinessId.Equals(id)).ToList();
         }
+        public List<Accomodation> GetAccomodationsByBusinessUserId(string id)
+        {
+            var bussId = db.Businesses.SingleOrDefault(o => o.AspUser.Equals(id)).BusinessId;
+            return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).Where(o => o.BusinessId.Equals(bussId)).ToList();
+        }
 
         public void RemoveById(int id)
         {

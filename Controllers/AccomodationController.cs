@@ -72,6 +72,20 @@ namespace homecoming.api.Controllers
             }
         }
 
+        [HttpGet("GetByAspId/{id}")]
+        public IActionResult FindAccomodationsByBusinessUserId(string id)
+        {
+            List<Accomodation> accomodationList = repo.GetAccomodationsByBusinessUserId(id);
+            if (accomodationList != null)
+            {
+                return Ok(accomodationList);
+            }
+            else
+            {
+                return BadRequest("No accomodation found!");
+            }
+        }
+
         [HttpDelete("{id}")]
         public IActionResult RemoveAccomodation(int id)
         {

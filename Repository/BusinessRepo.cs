@@ -127,5 +127,19 @@ namespace homecoming.api.Repo
                      blobClient.Upload(file.OpenReadStream());
                     return filename;         
         }
+
+        public int GetBusinessIdByUserId(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var obj = context.Businesses.SingleOrDefault(o => o.AspUser.Equals(id));
+                if(obj != null)
+                {
+                    return obj.BusinessId;
+                }
+                
+            }
+            return -1;
+        }
     }
 }

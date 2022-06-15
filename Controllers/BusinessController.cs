@@ -15,7 +15,7 @@ namespace homecoming.api.Controllers
     [Route("/api/[controller]")]
     public class BusinessController : Controller
     {
-       private IRepository<Business> repo;
+       private BusinessRepo repo;
        private IWebHostEnvironment web;
        private HomecomingDbContext db;
        private readonly BlobServiceClient client;
@@ -74,6 +74,17 @@ namespace homecoming.api.Controllers
             {
                 return BadRequest("Updated failed");
             }
+        }
+
+        [HttpGet("getid/{id}")]
+        public IActionResult GetBusinessId(string id)
+        {
+            int identity = repo.GetBusinessIdByUserId(id);
+            if(identity > 0)
+            {
+                return Ok(identity);
+            }
+            return BadRequest("Failed to get business Id");
         }
     }
 }

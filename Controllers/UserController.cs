@@ -21,7 +21,7 @@ namespace homecoming.api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser(Customer user)
+        public IActionResult CreateUser([FromBody]Customer user)
         {
             if(user != null)
             {

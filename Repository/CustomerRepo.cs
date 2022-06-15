@@ -45,6 +45,15 @@ namespace homecoming.api.Repo
         {
             return db.Customers.SingleOrDefault(o => o.CustomerId.Equals(id));
         }
+        public Customer GetUserById(string userId)
+        {
+            var user = db.Customers.SingleOrDefault(o => o.AspUserId.Equals(userId));
+            if(user != null)
+            {
+                return user;
+            }
+            return null;
+        }
 
         public void RemoveById(int id)
         {

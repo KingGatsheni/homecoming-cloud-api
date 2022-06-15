@@ -72,8 +72,13 @@ namespace homecoming.api.Repo
         }
         public List<Accomodation> GetAccomodationsByBusinessUserId(string id)
         {
-            var bussId = db.Businesses.SingleOrDefault(o => o.AspUser.Equals(id)).BusinessId;
-            return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).Where(o => o.BusinessId.Equals(bussId)).ToList();
+            var bussId = db.Businesses.SingleOrDefault(o => o.AspUser.Equals(id));
+            if(bussId != null)
+            {
+                int businessId = bussId.BusinessId;
+                return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).Where(o => o.BusinessId.Equals(businessId)).ToList();
+            }
+            return null;
         }
 
         public void RemoveById(int id)

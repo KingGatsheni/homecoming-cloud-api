@@ -15,6 +15,7 @@ namespace homecoming.api.Repo
         private IFileUpload<Room> fileUpLoad;
         private HomecomingDbContext db;
         private readonly BlobServiceClient client;
+        private bool isToRevert = false;
 
         public RoomRepo(IWebHostEnvironment host,HomecomingDbContext context, BlobServiceClient client)
         {
@@ -30,8 +31,7 @@ namespace homecoming.api.Repo
         /// <param name="Params"></param>
         public void Add(Room Params)
         {
-          bool uploaded =  fileUpLoad.MultiFileUpload(Params);
-            if (uploaded)
+            if (Params !=null)
             {
                 Room room = new Room()
                 {
@@ -45,12 +45,13 @@ namespace homecoming.api.Repo
                 db.SaveChanges();
 
                 int insertedRoomId = db.Rooms.Max(o=>o.RoomId);
-
+                if (Params.RoomTypeInfo != null)
+                {
                     RoomDetail type = new RoomDetail()
                     {
                         RoomId = insertedRoomId,
                         Type = Params.RoomTypeInfo.Type,
-                        Description =Params.RoomTypeInfo.Description,
+                        Description = Params.RoomTypeInfo.Description,
                         NumberOfBeds = Params.RoomTypeInfo.NumberOfBeds,
                         Television = Params.RoomTypeInfo.Television,
                         Air_condition = Params.RoomTypeInfo.Air_condition,
@@ -59,18 +60,31 @@ namespace homecoming.api.Repo
                     };
                     db.RoomDetails.Add(type);
                     db.SaveChanges();
-            }
-            foreach(var image in Params.RoomGallary)
-            {
-                RoomImage roomImages = new RoomImage()
+                }
+                else
                 {
-                    RoomId = db.Rooms.Max(o => o.RoomId),
-                    ImageUrl = image.ImageUrl
-                };
-                db.RoomImages.Add(roomImages);
-                db.SaveChanges();
+                    RemoveById(insertedRoomId);
+                    isToRevert = true;
+                }
+
+                if (Params.RoomGallary != null && !isToRevert)
+                {
+                    bool uploaded = fileUpLoad.MultiFileUpload(Params);
+                    if (uploaded)
+                    {
+                        foreach (var image in Params.RoomGallary)
+                        {
+                            RoomImage roomImages = new RoomImage()
+                            {
+                                RoomId = db.Rooms.Max(o => o.RoomId),
+                                ImageUrl = image.ImageUrl
+                            };
+                            db.RoomImages.Add(roomImages);
+                            db.SaveChanges();
+                        }
+                    }
+                }
             }
-           
         }
 
         public List<Room> FindAll()

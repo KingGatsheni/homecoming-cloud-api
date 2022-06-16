@@ -45,20 +45,23 @@ namespace homecoming.api.Repo
                 db.SaveChanges();
 
                 int insertedRoomId = db.Rooms.Max(o=>o.RoomId);
-                RoomDetail type = new RoomDetail()
-                {
-                    RoomId = insertedRoomId,
-                    Type = Params.RoomDetail.Type,
-                    Description = Params.RoomDetail.Description,
-                    NumberOfBeds = Params.RoomDetail.NumberOfBeds,
-                    Television = Params.RoomDetail.Television,
-                    Air_condition = Params.RoomDetail.Air_condition,
-                    Wifi = Params.RoomDetail.Wifi,
-                    Private_bathroom = Params.RoomDetail.Private_bathroom
-                };
-                db.RoomDetails.Add(type);
-                db.SaveChanges();
 
+                foreach(var info in Params.RoomTypeInfo)
+                {
+                    RoomDetail type = new RoomDetail()
+                    {
+                        RoomId = insertedRoomId,
+                        Type = info.Type,
+                        Description =info.Description,
+                        NumberOfBeds = info.NumberOfBeds,
+                        Television = info.Television,
+                        Air_condition = info.Air_condition,
+                        Wifi = info.Wifi,
+                        Private_bathroom = info.Private_bathroom
+                    };
+                    db.RoomDetails.Add(type);
+                    db.SaveChanges();
+                }
             }
             foreach(var image in Params.RoomGallary)
             {
@@ -75,17 +78,17 @@ namespace homecoming.api.Repo
 
         public List<Room> FindAll()
         {
-            return db.Rooms.AsNoTracking().AsQueryable().Include(o=> o.Accomodation).Include(o => o.RoomDetail).Include(o => o.RoomGallary).ToList();
+            return db.Rooms.AsNoTracking().AsQueryable().Include(o=> o.Accomodation).Include(o => o.RoomTypeInfo).Include(o => o.RoomGallary).ToList();
         }
 
         public Room GetById(int id)
         {
-            return db.Rooms.Include(o=>o.Accomodation).Include(o=> o.RoomDetail).Include(o=>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));
+            return db.Rooms.Include(o=>o.Accomodation).Include(o=> o.RoomTypeInfo).Include(o=>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));
         }
 
         public Room GetRoomByAccomodationId(int id)
         {
-            return db.Rooms.Include(o => o.Accomodation).Include(o => o.RoomDetail).Include(o => o.RoomGallary).FirstOrDefault(o => o.AccomodationId.Equals(id));
+            return db.Rooms.Include(o => o.Accomodation).Include(o => o.RoomTypeInfo).Include(o => o.RoomGallary).FirstOrDefault(o => o.AccomodationId.Equals(id));
         }
 
         public void RemoveById(int id)

@@ -15,12 +15,12 @@ namespace homecoming.api.Model
         public int RoomId { get; set; }
         public int AccomodationId { get; set; }
         public Accomodation Accomodation { get; set; }
-        public RoomDetail RoomDetail { get; set; }
         public string Description { get; set; }
         public Decimal Price { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public virtual List<RoomImage> RoomGallary { get; set; }
+        public virtual List<RoomDetail> RoomTypeInfo { get; set; }
 
         [NotMapped]
         [JsonIgnore]

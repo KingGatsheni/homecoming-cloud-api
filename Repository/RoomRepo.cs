@@ -83,6 +83,11 @@ namespace homecoming.api.Repo
             return db.Rooms.Include(o=>o.Accomodation).Include(o=> o.RoomDetail).Include(o=>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));
         }
 
+        public Room GetRoomByAccomodationId(int id)
+        {
+            return db.Rooms.Include(o => o.Accomodation).Include(o => o.RoomDetail).Include(o => o.RoomGallary).FirstOrDefault(o => o.AccomodationId.Equals(id));
+        }
+
         public void RemoveById(int id)
         {
             Room room = db.Rooms.Include(o =>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));

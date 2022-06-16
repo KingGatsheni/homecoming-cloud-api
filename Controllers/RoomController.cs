@@ -12,7 +12,7 @@ namespace homecoming.api.Controllers
     [Route("/api/[controller]")]
     public class RoomController : Controller
     {
-        private IRepository<Room> repo;
+        private RoomRepo repo;
         private IWebHostEnvironment web;
         private HomecomingDbContext db;
         private readonly BlobServiceClient client;
@@ -75,6 +75,17 @@ namespace homecoming.api.Controllers
             {
                 return BadRequest("Uodated Failed");
             }
+        }
+
+        [HttpGet("getroom{id}")]
+        public IActionResult GetRoomByAccomId(int id)
+        {
+            Room room = repo.GetRoomByAccomodationId(id);
+            if(room != null)
+            {
+                return Ok(room);
+            }
+            return NotFound("Error Room not Found!");
         }
     }
 }

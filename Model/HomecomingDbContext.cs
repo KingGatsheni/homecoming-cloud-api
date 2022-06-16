@@ -19,9 +19,9 @@ namespace homecoming.api.Model
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomImage> RoomImages { get; set; }
         public DbSet<ListingImage> ListingImages { get; set; }
-        public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<RoomDetail> RoomDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

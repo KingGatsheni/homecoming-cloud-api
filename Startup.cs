@@ -45,7 +45,7 @@ namespace homecoming.api
             });
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Reservation Api",Description= "homecoming.com swagger api, documents all endpints", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger Reservation Api",Description= "homecoming.com swagger api, documents all endpoints", Version = "v1" });
             });
             services.AddDbContextPool<HomecomingDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ReservationConString")));
             services.AddControllersWithViews()

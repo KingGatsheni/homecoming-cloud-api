@@ -15,8 +15,7 @@ namespace homecoming.api.Model
         public int RoomId { get; set; }
         public int AccomodationId { get; set; }
         public Accomodation Accomodation { get; set; }
-        public int RoomTypeId { get; set; }
-        public RoomType RoomType { get; set; }
+        public RoomDetail RoomDetail { get; set; }
         public string Description { get; set; }
         public Decimal Price { get; set; }
         public DateTime? CreatedAt { get; set; }

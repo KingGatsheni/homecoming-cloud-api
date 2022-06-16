@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20220616001201_des.cs" />
+    <Compile Remove="Migrations\20220616001201_des.Designer.cs" />
+    <Compile Remove="Migrations\20220616001403_des1.cs" />
+    <Compile Remove="Migrations\20220616001403_des1.Designer.cs" />
+    <Compile Remove="Migrations\20220616001639_des1.cs" />
+    <Compile Remove="Migrations\20220616001639_des1.Designer.cs" />
+    <Compile Remove="Migrations\20220616002713_des2.cs" />
+    <Compile Remove="Migrations\20220616002713_des2.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.12.0" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
@@ -19,6 +30,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Identity.Web" Version="1.10.0" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.10.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
@@ -27,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Uploads\Accomodations\" />
     <Folder Include="wwwroot\Uploads\Rooms\" />
     <Folder Include="wwwroot\Uploads\Thumbnails\" />

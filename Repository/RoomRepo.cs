@@ -36,7 +36,6 @@ namespace homecoming.api.Repo
                 Room room = new Room()
                 {
                     AccomodationId = Params.AccomodationId,
-                    RoomTypeId = Params.RoomTypeId,
                     Description = Params.Description,
                     Price = Params.Price,
                     CreatedAt = DateTime.Now,
@@ -44,6 +43,22 @@ namespace homecoming.api.Repo
                 };
                 db.Rooms.Add(room);
                 db.SaveChanges();
+
+                int insertedRoomId = db.Rooms.Max(o=>o.RoomId);
+                RoomDetail type = new RoomDetail()
+                {
+                    RoomId = insertedRoomId,
+                    Type = Params.RoomDetail.Type,
+                    Description = Params.RoomDetail.Description,
+                    NumberOfBeds = Params.RoomDetail.NumberOfBeds,
+                    Television = Params.RoomDetail.Television,
+                    Air_condition = Params.RoomDetail.Air_condition,
+                    Wifi = Params.RoomDetail.Wifi,
+                    Private_bathroom = Params.RoomDetail.Private_bathroom
+                };
+                db.RoomDetails.Add(type);
+                db.SaveChanges();
+
             }
             foreach(var image in Params.RoomGallary)
             {
@@ -60,12 +75,12 @@ namespace homecoming.api.Repo
 
         public List<Room> FindAll()
         {
-            return db.Rooms.AsNoTracking().AsQueryable().Include(o=> o.Accomodation).Include(o => o.RoomType).Include(o => o.RoomGallary).ToList();
+            return db.Rooms.AsNoTracking().AsQueryable().Include(o=> o.Accomodation).Include(o => o.RoomDetail).Include(o => o.RoomGallary).ToList();
         }
 
         public Room GetById(int id)
         {
-            return db.Rooms.Include(o=>o.Accomodation).Include(o=> o.RoomType).Include(o=>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));
+            return db.Rooms.Include(o=>o.Accomodation).Include(o=> o.RoomDetail).Include(o=>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));
         }
 
         public void RemoveById(int id)

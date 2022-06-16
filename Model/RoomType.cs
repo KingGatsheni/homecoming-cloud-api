@@ -10,8 +10,11 @@ namespace homecoming.api.Model
     {
         [Key]
         public int RoomTypeId { get; set; }
+        public int RoomId { get; set; }
+        public Room Room { get; set; }
         public string Type { get; set; }
         public int NumberOfBeds { get; set; }
+        public string Description { get; set; }
         public Boolean Television { get; set; }
         public Boolean Wifi { get; set; }
         public Boolean  Air_condition { get; set; }

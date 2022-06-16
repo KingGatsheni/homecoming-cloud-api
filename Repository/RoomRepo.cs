@@ -46,22 +46,19 @@ namespace homecoming.api.Repo
 
                 int insertedRoomId = db.Rooms.Max(o=>o.RoomId);
 
-                foreach(var info in Params.RoomTypeInfo)
-                {
                     RoomDetail type = new RoomDetail()
                     {
                         RoomId = insertedRoomId,
-                        Type = info.Type,
-                        Description =info.Description,
-                        NumberOfBeds = info.NumberOfBeds,
-                        Television = info.Television,
-                        Air_condition = info.Air_condition,
-                        Wifi = info.Wifi,
-                        Private_bathroom = info.Private_bathroom
+                        Type = Params.RoomTypeInfo.Type,
+                        Description =Params.RoomTypeInfo.Description,
+                        NumberOfBeds = Params.RoomTypeInfo.NumberOfBeds,
+                        Television = Params.RoomTypeInfo.Television,
+                        Air_condition = Params.RoomTypeInfo.Air_condition,
+                        Wifi = Params.RoomTypeInfo.Wifi,
+                        Private_bathroom = Params.RoomTypeInfo.Private_bathroom
                     };
                     db.RoomDetails.Add(type);
                     db.SaveChanges();
-                }
             }
             foreach(var image in Params.RoomGallary)
             {

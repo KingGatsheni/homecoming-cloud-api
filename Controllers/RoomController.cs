@@ -87,5 +87,15 @@ namespace homecoming.api.Controllers
             }
             return NotFound("Error Room not Found!");
         }
+        [HttpGet("getrooms/{id}")]
+        public IActionResult GetRoomsById(int id)
+        {
+            var rooms = repo.GetRoomDetailsByRoomId(id);
+            if(rooms != null)
+            {
+                return Ok(rooms);
+            }
+            return BadRequest("rooms can't be found");
+        }
     }
 }

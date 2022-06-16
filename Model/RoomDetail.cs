@@ -8,7 +8,7 @@ namespace homecoming.api.Model
         [Key]
         public int RoomDetailId { get; set; }
         public int RoomId { get; set; }
-        public Room Room { get; set; }
+        public virtual Room Room { get; set; }
         public string Type { get; set; }
         public int NumberOfBeds { get; set; }
         public string Description { get; set; }

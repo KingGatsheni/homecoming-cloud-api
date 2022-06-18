@@ -78,7 +78,7 @@ namespace homecoming.api.Controllers
             }
         }
 
-        [HttpGet("getroom{id}")]
+        [HttpGet("getroom/{id}")]
         public IActionResult GetRoomByAccomId(int id)
         {
             Room room = repo.GetRoomByAccomodationId(id);

@@ -48,10 +48,11 @@ namespace homecoming.api.Controllers
         [HttpPost]
         public IActionResult AddRoom([FromForm] Room room)
         {
-            if(room != null)
+            if (room != null)
             {
                 repo.Add(room);
-                return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + room.RoomId, room);
+
+                return Ok(repo.InsertedRoomId);
             }
             return BadRequest(" Room data could not be saved!");
         }

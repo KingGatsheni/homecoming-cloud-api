@@ -16,6 +16,8 @@ namespace homecoming.api.Repo
         private HomecomingDbContext db;
         private readonly BlobServiceClient client;
         private bool isToRevert = false;
+        public int InsertedRoomId { get { return insertedId; } }
+        private int insertedId = 0;
 
         public RoomRepo(IWebHostEnvironment host,HomecomingDbContext context, BlobServiceClient client)
         {
@@ -39,37 +41,27 @@ namespace homecoming.api.Repo
                     Description = Params.Description,
                     Price = Params.Price,
                     CreatedAt = DateTime.Now,
-                    UpdatedOn = null
+                    UpdatedOn = null,
                 };
                 db.Rooms.Add(room);
-                db.SaveChanges();
-
-                int insertedRoomId = db.Rooms.Max(o=>o.RoomId);
-                if (Params.RoomTypeInfo != null)
+                int sucess =  db.SaveChanges();
+                bool uploaded = false;
+                if(sucess > 0)
                 {
-                    RoomDetail type = new RoomDetail()
-                    {
-                        RoomId = insertedRoomId,
-                        Type = Params.RoomTypeInfo.Type,
-                        Description = Params.RoomTypeInfo.Description,
-                        NumberOfBeds = Params.RoomTypeInfo.NumberOfBeds,
-                        Television = Params.RoomTypeInfo.Television,
-                        Air_condition = Params.RoomTypeInfo.Air_condition,
-                        Wifi = Params.RoomTypeInfo.Wifi,
-                        Private_bathroom = Params.RoomTypeInfo.Private_bathroom
-                    };
-                    db.RoomDetails.Add(type);
-                    db.SaveChanges();
+                    insertedId = db.Rooms.Max(o => o.RoomId);
+                    uploaded = fileUpLoad.MultiFileUpload(Params);
                 }
                 else
                 {
-                    RemoveById(insertedRoomId);
+                    RemoveById(insertedId);
                     isToRevert = true;
                 }
-
-                if (Params.RoomGallary != null && !isToRevert)
-                {
-                    bool uploaded = fileUpLoad.MultiFileUpload(Params);
+               
+               
+               
+               
+                if (Params.ImageList != null && !isToRevert)
+                { 
                     if (uploaded)
                     {
                         foreach (var image in Params.RoomGallary)
@@ -89,17 +81,17 @@ namespace homecoming.api.Repo
 
         public List<Room> FindAll()
         {
-            return db.Rooms.AsNoTracking().AsQueryable().Include(o=> o.Accomodation).Include(o => o.RoomTypeInfo).Include(o => o.RoomGallary).ToList();
+            return db.Rooms.AsNoTracking().AsQueryable().Include(o=> o.Accomodation).Include(o => o.RoomDetails).Include(o => o.RoomGallary).ToList();
         }
 
         public Room GetById(int id)
         {
-            return db.Rooms.Include(o=>o.Accomodation).Include(o=> o.RoomTypeInfo).Include(o=>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));
+            return db.Rooms.Include(o=>o.Accomodation).Include(o=> o.RoomDetails).Include(o=>o.RoomGallary).FirstOrDefault(o => o.RoomId.Equals(id));
         }
 
         public Room GetRoomByAccomodationId(int id)
         {
-            return db.Rooms.Include(o => o.Accomodation).Include(o => o.RoomTypeInfo).Include(o => o.RoomGallary).FirstOrDefault(o => o.AccomodationId.Equals(id));
+            return db.Rooms.Include(o => o.Accomodation).Include(o => o.RoomDetails).Include(o => o.RoomGallary).FirstOrDefault(o => o.AccomodationId.Equals(id));
         }
 
         public List<RoomDetail> GetRoomDetailsByRoomId(int roomId)
@@ -135,3 +127,30 @@ namespace homecoming.api.Repo
         }
     }
 }
+
+//if (room.RoomDetails.Count > 0)
+//{
+//    foreach(var item in room.RoomDetails)
+//    {
+//        RoomDetail type = new RoomDetail()
+//        {
+//            RoomId = insertedRoomId,
+//            Type = item.Type,
+//            Description = item.Description,
+//            NumberOfBeds = item.NumberOfBeds,
+//            Television =item.Television,
+//            Air_condition = item.Air_condition,
+//            Wifi = item.Wifi,
+//            Private_bathroom = item.Private_bathroom
+//        };
+//        db.RoomDetails.Add(type);
+//        db.SaveChanges();
+//    }
+//}
+//else
+//{
+//     RemoveById(insertedRoomId);
+//     isToRevert = true;
+//}
+//room.RoomDetails = new List<RoomDetail>();
+////room.RoomDetails = Params.RoomDetails;

@@ -141,5 +141,19 @@ namespace homecoming.api.Repo
             }
             return -1;
         }
+
+        public Business GetBusinessIdByAspUserId(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var obj = context.Businesses.SingleOrDefault(o => o.AspUser.Equals(id));
+                if (obj != null)
+                {
+                    return obj;
+                }
+
+            }
+            return null;
+        }
     }
 }

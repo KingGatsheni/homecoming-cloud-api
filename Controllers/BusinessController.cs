@@ -86,5 +86,16 @@ namespace homecoming.api.Controllers
             }
             return BadRequest("Failed to get business Id");
         }
+
+        [HttpGet("GetBusinessByAspUserId")]
+        public IActionResult GetBusinessByAspUserId(string id)
+        {
+            var obj = repo.GetBusinessIdByAspUserId(id);
+            if (obj !=null)
+            {
+                return Ok(obj);
+            }
+            return NotFound("Failed to get business");
+        }
     }
 }

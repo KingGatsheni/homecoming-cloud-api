@@ -87,7 +87,7 @@ namespace homecoming.api.Controllers
             return BadRequest("Failed to get business Id");
         }
 
-        [HttpGet("GetBusinessByAspUserId")]
+        [HttpGet("GetBusinessByAspUserId/{id}")]
         public IActionResult GetBusinessByAspUserId(string id)
         {
             var obj = repo.GetBusinessIdByAspUserId(id);

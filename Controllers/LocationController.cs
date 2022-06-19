@@ -27,10 +27,10 @@ namespace homecoming.api.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetByLocationId/")]
-        public IActionResult GetAccomodationList(string location)
+        [HttpGet("GetByLocationId/{id}")]
+        public IActionResult GetAccomodationList(string id)
         {
-            var accomList = repo.GetAccomodationsByLocationName(location);
+            var accomList = repo.GetAccomodationsByLocationName(id);
             if(accomList != null)
             {
                 return Ok(accomList);

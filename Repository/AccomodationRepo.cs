@@ -64,7 +64,7 @@ namespace homecoming.api.Repo
 
         public Accomodation GetById(int id)
         {
-            return db.Accomodations.Include(o=>o.Business).Include(o=>o.AccomodationGallary).Include(o=>o.AccomodationRooms).SingleOrDefault(o => o.AccomodationId.Equals(id));
+            return db.Accomodations.Include(o=>o.Business).Include(o=>o.AccomodationGallary).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).SingleOrDefault(o => o.AccomodationId.Equals(id));
         }
         public List<Accomodation> GetAccomodationByBusinessId(int id)
         {

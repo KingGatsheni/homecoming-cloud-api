@@ -15,15 +15,17 @@ namespace homecoming.api.Model
         public int AccomodationId { get; set; }
         public int BusinessId { get; set; }
         public Business Business { get; set; }
+        public int LocationId { get; set; }
+        public virtual Location GeoLocation { get; set; }
         public string CoverPhoto { get; set; }
         public string AccomodationName { get; set; }
-        public string Location { get; set; }
         public string Description { get; set; }
         public decimal Rating { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public virtual List<ListingImage> AccomodationGallary { get; set; }
-        public virtual List<Room> AccomodationRooms { get;}
+        public virtual List<Room> AccomodationRooms { get; set; }
+
         [NotMapped]
         [JsonIgnore]
         public IFormFile CoverImage { get; set; }

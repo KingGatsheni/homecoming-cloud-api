@@ -32,9 +32,9 @@ namespace homecoming.api.Repo
                 Accomodation accomodation = new Accomodation()
                 {
                     BusinessId = Params.BusinessId,
+                    LocationId = Params.LocationId,
                     CoverPhoto = fileUpLoad.FileUploadAsync(Params.CoverImage),
                     AccomodationName = Params.AccomodationName,
-                    Location = Params.Location,
                     Description = Params.Description,
                     CreatedAt = DateTime.Now,
                     UpdatedOn = null
@@ -94,7 +94,6 @@ namespace homecoming.api.Repo
             {
                 Accomodation accomodation = db.Accomodations.SingleOrDefault(o => o.AccomodationId.Equals(id));
                 accomodation.AccomodationName = Params.AccomodationName;
-                accomodation.Location = Params.Location;
                 accomodation.Description = Params.Description;
                 accomodation.UpdatedOn = DateTime.Now;
 

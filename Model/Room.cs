@@ -14,8 +14,9 @@ namespace homecoming.api.Model
       [Key]
         public int RoomId { get; set; }
         public int AccomodationId { get; set; }
-        public Accomodation Accomodation { get; set; }
+        public virtual Accomodation Accomodation { get; set; }
         public string Description { get; set; }
+        public bool IsBooked { get; set; }
         public Decimal Price { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedOn { get; set; }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace homecoming.api.Migrations
 {
-    public partial class des : Migration
+    public partial class loc : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -90,6 +90,19 @@ namespace homecoming.api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    LocationId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LocationName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.LocationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,9 +232,9 @@ namespace homecoming.api.Migrations
                     AccomodationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BusinessId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: false),
                     CoverPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AccomodationName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Rating = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -235,6 +248,11 @@ namespace homecoming.api.Migrations
                         column: x => x.BusinessId,
                         principalTable: "Businesses",
                         principalColumn: "BusinessId");
+                    table.ForeignKey(
+                        name: "FK_Accomodations_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
+                        principalColumn: "LocationId");
                 });
 
             migrationBuilder.CreateTable(
@@ -352,31 +370,6 @@ namespace homecoming.api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoomTypes",
-                columns: table => new
-                {
-                    RoomTypeId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoomId = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfBeds = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Television = table.Column<bool>(type: "bit", nullable: false),
-                    Wifi = table.Column<bool>(type: "bit", nullable: false),
-                    Air_condition = table.Column<bool>(type: "bit", nullable: false),
-                    Private_bathroom = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoomTypes", x => x.RoomTypeId);
-                    table.ForeignKey(
-                        name: "FK_RoomTypes_Rooms_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Rooms",
-                        principalColumn: "RoomId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -414,6 +407,11 @@ namespace homecoming.api.Migrations
                 name: "IX_Accomodations_BusinessId",
                 table: "Accomodations",
                 column: "BusinessId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accomodations_LocationId",
+                table: "Accomodations",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -487,8 +485,7 @@ namespace homecoming.api.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_RoomDetails_RoomId",
                 table: "RoomDetails",
-                column: "RoomId",
-                unique: true);
+                column: "RoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoomImages_RoomId",
@@ -499,11 +496,6 @@ namespace homecoming.api.Migrations
                 name: "IX_Rooms_AccomodationId",
                 table: "Rooms",
                 column: "AccomodationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomTypes_RoomId",
-                table: "RoomTypes",
-                column: "RoomId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -536,9 +528,6 @@ namespace homecoming.api.Migrations
                 name: "RoomImages");
 
             migrationBuilder.DropTable(
-                name: "RoomTypes");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -561,6 +550,9 @@ namespace homecoming.api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Businesses");
+
+            migrationBuilder.DropTable(
+                name: "Location");
         }
     }
 }

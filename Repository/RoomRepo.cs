@@ -56,10 +56,7 @@ namespace homecoming.api.Repo
                     RemoveById(insertedId);
                     isToRevert = true;
                 }
-               
-               
-               
-               
+                
                 if (Params.ImageList != null && !isToRevert)
                 { 
                     if (uploaded)

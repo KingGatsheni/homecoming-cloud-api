@@ -12,8 +12,8 @@ using homecoming.api.Model;
 namespace homecoming.api.Migrations
 {
     [DbContext(typeof(HomecomingDbContext))]
-    [Migration("20220616004334_des")]
-    partial class des
+    [Migration("20220619140229_l")]
+    partial class l
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,8 +47,8 @@ namespace homecoming.api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Rating")
                         .HasColumnType("decimal(18,2)");
@@ -59,6 +59,8 @@ namespace homecoming.api.Migrations
                     b.HasKey("AccomodationId");
 
                     b.HasIndex("BusinessId");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Accomodations");
                 });
@@ -273,6 +275,22 @@ namespace homecoming.api.Migrations
                     b.ToTable("ListingImages");
                 });
 
+            modelBuilder.Entity("homecoming.api.Model.Location", b =>
+                {
+                    b.Property<int>("LocationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationId"), 1L, 1);
+
+                    b.Property<string>("LocationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LocationId");
+
+                    b.ToTable("Location");
+                });
+
             modelBuilder.Entity("homecoming.api.Model.Rating", b =>
                 {
                     b.Property<int>("RatingId")
@@ -367,6 +385,9 @@ namespace homecoming.api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -414,8 +435,7 @@ namespace homecoming.api.Migrations
 
                     b.HasKey("RoomDetailId");
 
-                    b.HasIndex("RoomId")
-                        .IsUnique();
+                    b.HasIndex("RoomId");
 
                     b.ToTable("RoomDetails");
                 });
@@ -439,45 +459,6 @@ namespace homecoming.api.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("RoomImages");
-                });
-
-            modelBuilder.Entity("homecoming.api.Model.RoomType", b =>
-                {
-                    b.Property<int>("RoomTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomTypeId"), 1L, 1);
-
-                    b.Property<bool>("Air_condition")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumberOfBeds")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Private_bathroom")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Television")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Wifi")
-                        .HasColumnType("bit");
-
-                    b.HasKey("RoomTypeId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("RoomTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -621,7 +602,15 @@ namespace homecoming.api.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("homecoming.api.Model.Location", "GeoLocation")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Business");
+
+                    b.Navigation("GeoLocation");
                 });
 
             modelBuilder.Entity("homecoming.api.Model.Booking", b =>
@@ -695,8 +684,8 @@ namespace homecoming.api.Migrations
             modelBuilder.Entity("homecoming.api.Model.RoomDetail", b =>
                 {
                     b.HasOne("homecoming.api.Model.Room", "Room")
-                        .WithOne("RoomDetail")
-                        .HasForeignKey("homecoming.api.Model.RoomDetail", "RoomId")
+                        .WithMany("RoomDetails")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -707,17 +696,6 @@ namespace homecoming.api.Migrations
                 {
                     b.HasOne("homecoming.api.Model.Room", "Room")
                         .WithMany("RoomGallary")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("homecoming.api.Model.RoomType", b =>
-                {
-                    b.HasOne("homecoming.api.Model.Room", "Room")
-                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -790,7 +768,7 @@ namespace homecoming.api.Migrations
 
             modelBuilder.Entity("homecoming.api.Model.Room", b =>
                 {
-                    b.Navigation("RoomDetail");
+                    b.Navigation("RoomDetails");
 
                     b.Navigation("RoomGallary");
                 });

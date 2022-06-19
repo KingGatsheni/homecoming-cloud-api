@@ -15,6 +15,10 @@
     <Compile Remove="Migrations\20220616001639_des1.Designer.cs" />
     <Compile Remove="Migrations\20220616002713_des2.cs" />
     <Compile Remove="Migrations\20220616002713_des2.Designer.cs" />
+    <Compile Remove="Migrations\20220616004334_des.cs" />
+    <Compile Remove="Migrations\20220616004334_des.Designer.cs" />
+    <Compile Remove="Migrations\20220619130228_lock.cs" />
+    <Compile Remove="Migrations\20220619130228_lock.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,7 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Uploads\Accomodations\" />
     <Folder Include="wwwroot\Uploads\Rooms\" />
     <Folder Include="wwwroot\Uploads\Thumbnails\" />

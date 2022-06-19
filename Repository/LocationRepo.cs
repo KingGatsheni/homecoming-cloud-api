@@ -23,7 +23,7 @@ namespace homecoming.api.Repository
               int locId =   db.Location.SingleOrDefault(o=>o.LocationName.ToLower().Equals(locationName.ToLower())).LocationId;
                 if(locId > 0)
                 {
-                    return db.Accomodations.Include(o=>o.AccomodationGallary).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).Where(o => o.LocationId.Equals(locId)); 
+                    return db.Accomodations.AsNoTracking().AsQueryable().Include(o=>o.AccomodationGallary).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).Where(o => o.LocationId.Equals(locId)); 
                 }
             }
             return null;

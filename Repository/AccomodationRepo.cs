@@ -59,16 +59,16 @@ namespace homecoming.api.Repo
         public List<Accomodation> FindAll()
         {
 
-            return db.Accomodations.AsNoTracking().AsQueryable().Include(o=> o.Business).Include(o => o.AccomodationRooms).Include(o => o.AccomodationGallary).ToList();
+            return db.Accomodations.Include(o => o.GeoLocation).AsNoTracking().AsQueryable().Include(o=> o.Business).Include(o => o.AccomodationRooms).Include(o => o.AccomodationGallary).ToList();
         }
 
         public Accomodation GetById(int id)
         {
-            return db.Accomodations.Include(o=>o.Business).Include(o=>o.AccomodationGallary).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).SingleOrDefault(o => o.AccomodationId.Equals(id));
+            return db.Accomodations.AsNoTracking().AsQueryable().Include(o => o.GeoLocation).Include(o=>o.Business).Include(o=>o.AccomodationGallary).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).SingleOrDefault(o => o.AccomodationId.Equals(id));
         }
         public List<Accomodation> GetAccomodationByBusinessId(int id)
         {
-            return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).Where(o => o.BusinessId.Equals(id)).ToList();
+            return db.Accomodations.AsNoTracking().AsQueryable().Include(o => o.GeoLocation).Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).Where(o => o.BusinessId.Equals(id)).ToList();
         }
         public List<Accomodation> GetAccomodationsByBusinessUserId(string id)
         {
@@ -76,7 +76,7 @@ namespace homecoming.api.Repo
             if(bussId != null)
             {
                 int businessId = bussId.BusinessId;
-                return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).Where(o => o.BusinessId.Equals(businessId)).ToList();
+                return db.Accomodations.AsNoTracking().AsQueryable().Include(o=>o.GeoLocation).Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).Where(o => o.BusinessId.Equals(businessId)).ToList();
             }
             return null;
         }

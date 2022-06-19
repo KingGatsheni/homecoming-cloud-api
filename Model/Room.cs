@@ -21,7 +21,7 @@ namespace homecoming.api.Model
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public virtual List<RoomImage> RoomGallary { get; set; }
-        public virtual List<RoomDetail> RoomDetails { get; set; }
+        public virtual RoomDetail RoomDetails { get; set; }
 
         [NotMapped]
         [JsonIgnore]

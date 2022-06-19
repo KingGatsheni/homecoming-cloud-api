@@ -146,7 +146,7 @@ namespace homecoming.api.Repo
         {
             if (!string.IsNullOrEmpty(id))
             {
-                var obj = context.Businesses.SingleOrDefault(o => o.AspUser.Equals(id));
+                var obj = context.Businesses.Include(o=>o.GetAccomodations).ThenInclude(o=>o.AccomodationGallary).SingleOrDefault(o => o.AspUser.Equals(id));
                 if (obj != null)
                 {
                     return obj;

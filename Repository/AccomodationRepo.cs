@@ -76,7 +76,7 @@ namespace homecoming.api.Repo
             if(bussId != null)
             {
                 int businessId = bussId.BusinessId;
-                return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).Where(o => o.BusinessId.Equals(businessId)).ToList();
+                return db.Accomodations.Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).ThenInclude(o=>o.RoomDetails).Include(o=>o.AccomodationRooms).ThenInclude(o=>o.RoomGallary).Where(o => o.BusinessId.Equals(businessId)).ToList();
             }
             return null;
         }

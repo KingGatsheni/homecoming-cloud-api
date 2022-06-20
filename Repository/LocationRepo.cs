@@ -41,7 +41,7 @@ namespace homecoming.api.Repository
 
         public IEnumerable<Accomodation> GetAccomodationsByLoctionId(int id)
         {
-            return db.Accomodations.AsNoTracking().AsQueryable().Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).ThenInclude(o => o.RoomDetails).Include(o => o.AccomodationRooms).ThenInclude(o => o.RoomGallary).Where(o => o.LocationId.Equals(id));
+            return db.Accomodations.AsNoTracking().AsQueryable().Include(o => o.AccomodationGallary).Include(o => o.AccomodationRooms).ThenInclude(o => o.RoomDetails).Include(o => o.AccomodationRooms).ThenInclude(o => o.RoomGallary).Include(o=>o.GeoLocation).Where(o => o.LocationId.Equals(id));
         }
     }
 }

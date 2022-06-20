@@ -10,6 +10,8 @@ namespace homecoming.api.Interfaces
        public  IEnumerable<Location> GetLocationByName();
        public IEnumerable<Accomodation> GetAccomodationsByLocationName( string locationName);
        public IEnumerable<Accomodation> GetAccomodationsByLocationNameAndCheckInDates(string locationName, DateTime checkinDate, DateTime checkDate);
+       public IEnumerable<Accomodation> GetAccomodationsByLoctionId(int id);
+
             
     }
 }

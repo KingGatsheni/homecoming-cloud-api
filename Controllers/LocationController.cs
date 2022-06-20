@@ -37,5 +37,16 @@ namespace homecoming.api.Controllers
             }
             return NotFound();
         }
+
+        [HttpGet("GetAccomByLocationId/{id}")]
+        public IActionResult GetAccomodationList(int id)
+        {
+            var accomList = repo.GetAccomodationsByLoctionId(id);
+            if (accomList != null)
+            {
+                return Ok(accomList);
+            }
+            return NotFound();
+        }
     }
 }

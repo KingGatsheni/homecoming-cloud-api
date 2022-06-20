@@ -80,5 +80,16 @@ namespace homecoming.api.Repo
             }
            
         }
+
+        public int GetUserIdByAspId(string id)
+        {
+            
+            var user = db.Customers.SingleOrDefault(o => o.AspUserId.Equals(id));
+            if(user != null)
+            {
+                return user.CustomerId;
+            }
+            return -1;
+        }
     }
 }

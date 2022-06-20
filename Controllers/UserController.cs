@@ -52,5 +52,16 @@ namespace homecoming.api.Controllers
             }
             return BadRequest("User not Found!");
         }
+
+        [HttpGet("get/{id}")]
+        public IActionResult getUser(string id)
+        {
+            var userId = repo.GetUserIdByAspId(id);
+            if(userId > 0)
+            {
+                return Ok(userId);
+            }
+            return BadRequest("User not found");
+        }
     }
 }

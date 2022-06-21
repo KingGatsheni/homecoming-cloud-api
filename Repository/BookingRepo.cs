@@ -63,5 +63,21 @@ namespace homecoming.api.Repo
         {
             //to be implemented
         }
+
+        public bool updateBookedRoomStatus(int id)
+        {
+            var roomToUpdate = db.Rooms.SingleOrDefault(o => o.RoomId.Equals(id));
+            if(roomToUpdate != null)
+            {
+                roomToUpdate.IsBooked = true;
+                db.Rooms.Attach(roomToUpdate).Property(o => o.IsBooked).IsModified = true; ;
+                int updated =  db.SaveChanges();
+                if (updated > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

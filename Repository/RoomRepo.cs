@@ -122,6 +122,19 @@ namespace homecoming.api.Repo
                 db.SaveChanges();
             }
         }
+        public bool InsertRoomDetails(RoomDetail detail)
+        {
+           db.RoomDetails.Add(detail);
+            int indexResult = db.SaveChanges();
+            if(indexResult > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
 

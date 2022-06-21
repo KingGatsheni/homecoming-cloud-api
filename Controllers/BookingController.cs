@@ -40,5 +40,16 @@ namespace homecoming.api.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPatch]
+        public IActionResult updateRoomStatus(int id)
+        {
+            bool success =repo.updateBookedRoomStatus(id);
+            if (success)
+            {
+                return Ok(success);
+            }
+            return BadRequest();
+        }
     }
 }

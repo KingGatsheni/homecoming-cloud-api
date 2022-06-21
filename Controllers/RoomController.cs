@@ -98,5 +98,16 @@ namespace homecoming.api.Controllers
             }
             return BadRequest("rooms can't be found");
         }
+
+        [HttpPost("roominfo")]
+        public IActionResult InsertRoomDetails(RoomDetail detail)
+        {
+            bool success = repo.InsertRoomDetails(detail);
+            if (success)
+            {
+                return Ok(success);
+            }
+            return BadRequest();
+        }
     }
 }

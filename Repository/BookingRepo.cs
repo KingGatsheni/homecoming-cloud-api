@@ -36,7 +36,7 @@ namespace homecoming.api.Repo
 
         public Booking GetBookingByRoomId(int id)
         {
-            return db.Bookings.Include(o => o.Customer).Include(o => o.Room).SingleOrDefault(o=>o.RoomId.Equals(id));
+            return db.Bookings.Include(o => o.Customer).Include(o => o.Room).Where(o=>o.RoomId.Equals(id)).OrderBy(o=>o.BookingId).Last();
         }
         public List<Booking> FindAll()
         {

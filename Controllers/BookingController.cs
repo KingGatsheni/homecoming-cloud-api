@@ -30,7 +30,7 @@ namespace homecoming.api.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendBooking(Booking booking)
+        public IActionResult SendBooking([FromBody]Booking booking)
         {
             if(booking!= null)
             {

@@ -29,11 +29,15 @@ namespace homecoming.api.Repo
                     Check_Out_Date = Params.Check_Out_Date,
                 };
 
-               // db.Bookings.Add(booking);
-                //db.SaveChanges();
+                db.Bookings.Add(booking);
+                db.SaveChanges();
             }
         }
 
+        public Booking GetBookingByRoomId(int id)
+        {
+            return db.Bookings.Include(o => o.Customer).Include(o => o.Room).SingleOrDefault(o=>o.RoomId.Equals(id));
+        }
         public List<Booking> FindAll()
         {
             return db.Bookings.Include(o => o.Customer).Include(o => o.Room).ToList();

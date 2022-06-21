@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace homecoming.api.Controllers
 {
-    [Route("api/[contoller]")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class BookingController : Controller
     {
         private readonly HomecomingDbContext cx;
-        BookingRepo repo;
+        private BookingRepo repo;
         public BookingController(HomecomingDbContext cx)
         {
             repo = new BookingRepo(cx);
             this.cx = cx;
         }
-        [HttpGet("{history/id}")]
+        [HttpGet("history/{id}")]
         public IActionResult GetBookingHistory(int id)
         {
             var item = repo.GetBookingByRoomId(id);
